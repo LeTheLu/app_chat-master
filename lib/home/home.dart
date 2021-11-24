@@ -25,6 +25,7 @@ class _HomeState extends State<Home> {
 
   final CubitHome _cubitHome = CubitHome();
 
+
   List<Map<String, String>> listFriend = [];
   List<UserData> listSearch = [];
 
@@ -33,7 +34,6 @@ class _HomeState extends State<Home> {
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) async {
       listFriend = await _cubitHome.getListHistory(context);
-      print(listFriend);
     });
     super.initState();
     _controllerSearch.addListener(() async {
@@ -41,7 +41,7 @@ class _HomeState extends State<Home> {
         listFriend = await _cubitHome.getListHistory(context);
       }
       Delay(700);
-      //list = await _cubitHome.getListSearch(context,name: _controllerSearch.text);
+      listSearch = await _cubitHome.getListSearch(context,name: _controllerSearch.text);
     });
   }
 
@@ -117,7 +117,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Visibility(
                   visible: searchCheck,
                   child: SizedBox(
@@ -127,7 +127,7 @@ class _HomeState extends State<Home> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
+                          const BorderRadius.all(Radius.circular(30)),
                           border: Border.all(color: Colors.teal)),
                       child: Center(
                         child: Padding(
@@ -162,6 +162,16 @@ class _HomeState extends State<Home> {
                                 child: CircularProgressIndicator(),
                               );
                             } else if (state.enumHome == EnumHome.errHome) {
+                              return Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: const [
+                                    Text("Bạn chưa có cuộc trò chuyện nào!", style: TextStyle(color: Colors.grey, fontSize: 20, fontWeight: FontWeight.w600),),
+                                    Text("Hãy nói chuyện với bạn bè của bạn nhé!", style: TextStyle(color: Colors.grey, fontSize: 15, fontWeight: FontWeight.w600))
+                                  ],
+                                ),
+                              );
                             } else if (state.enumHome == EnumHome.doneHome){
                               return ListView.separated(
                                   separatorBuilder: (context, index) =>
@@ -172,14 +182,27 @@ class _HomeState extends State<Home> {
                                   ),
                                   itemCount: listFriend.length,
                                   itemBuilder: (context, index) {
-                                    print(listFriend[index]);
                                     return UserFriend(idChatRoom: listFriend[index].keys.first, nameFriend:listFriend[index].values.first);
                                   });
+
                             } else if (state.enumHome == EnumHome.initSearch) {
-                            } else if (state.enumHome == EnumHome.loadingSearch) {
+
+                            }
+                            else if (state.enumHome == EnumHome.loadingSearch) {
                             } else if (state.enumHome == EnumHome.doneSearch) {
+                              return ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Divider(),
+                                  ),
+                                  itemCount: listSearch.length,
+                                  itemBuilder: (context, index) {
+                                    return UserFriendSearch(userFriend: listSearch[index],);
+                                  });
                             } else if (state.enumHome == EnumHome.errSearch) {}
-                            return SizedBox();
+                            return const SizedBox();
                           },
                         )))),
           ],
@@ -188,10 +211,6 @@ class _HomeState extends State<Home> {
     );
   }
 }
-/*    : ListView.builder(
-itemCount: listSearch.length,
-itemBuilder: (context, index) =>
-UserFriendSearch(userFriend: listSearch[index])),*/
 
 class UserFriend extends StatefulWidget {
   final String idChatRoom;
@@ -295,6 +314,10 @@ class _UserFriendSearchState extends State<UserFriendSearch> {
                     )));
       },
       child: Container(
+        decoration: BoxDecoration(
+          color: Colors.blue[200],
+          borderRadius: const BorderRadius.all(Radius.circular(50))
+        ),
         padding: const EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -45,7 +45,6 @@ class _SignUpState extends State<SignUp> {
             }else if (state.enumSignUp == EnumSignUp.errSignUp){
               checkSignInErr = true;
             }else if(state.enumSignUp == EnumSignUp.doneSignUp){
-              Navigator.pushNamed(context, "chatRoom");
             }else if(state.enumSignUp == EnumSignUp.signUpAgain){
               checkSignInErr = false;
             }
@@ -91,9 +90,7 @@ class _SignUpState extends State<SignUp> {
                                           controller: _controllerPass,
                                           checkHind: checkHind,
                                           onPressed: () {
-                                            setState(() {
                                               checkHind = !checkHind;
-                                            });
                                           }),
                                     ],
                                   ))

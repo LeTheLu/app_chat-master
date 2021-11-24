@@ -19,8 +19,8 @@ class CubitSignUp extends Cubit<SignUpState>{
         };
         databaseMethod.uploadUserInfo(userMap);
         UserInheritedWidget.of(context).user.email = email;
-        UserInheritedWidget.of(context).user.name = await databaseMethod.getNameByUserGmail(email: UserInheritedWidget.of(context).user.email ?? "");
-        emit(state.copyWith(enumSignUp: EnumSignUp.doneSignUp));
+        UserInheritedWidget.of(context).user.name = await databaseMethod.getNameByGmail(email: UserInheritedWidget.of(context).user.email ?? "");
+        Navigator.of(context).pushNamedAndRemoveUntil("chatRoom", (route) => false);
       }).catchError((e){
         emit(state.copyWith(enumSignUp: EnumSignUp.errSignUp));
       });

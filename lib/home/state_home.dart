@@ -9,8 +9,7 @@ enum EnumHome{
   initSearch,
   loadingSearch,
   doneSearch,
-  errSearch
-
+  errSearch,
 }
 
 class StateHome extends Equatable{

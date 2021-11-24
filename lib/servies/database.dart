@@ -84,7 +84,7 @@ class DatabaseMethod {
     return id;
   }
 
-  Future<String?> getNameByUserGmail({required String email}) async {
+  Future<String?> getNameByGmail({required String email}) async {
     UserData user = UserData();
     await FirebaseFirestore.instance
         .collection("users")
