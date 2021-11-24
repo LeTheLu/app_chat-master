@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
 
   final CubitHome _cubitHome = CubitHome();
 
-  List listFriend = [];
+  List<Map<String, String>> listFriend = [];
   List<UserData> listSearch = [];
 
 
@@ -158,25 +158,28 @@ class _HomeState extends State<Home> {
                           bloc: _cubitHome,
                           builder: (context, state) {
                             if (state.enumHome == EnumHome.loadingHome) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
                             } else if (state.enumHome == EnumHome.errHome) {
                             } else if (state.enumHome == EnumHome.doneHome){
+                              return ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10.0),
+                                    child: Divider(),
+                                  ),
+                                  itemCount: listFriend.length,
+                                  itemBuilder: (context, index) {
+                                    print(listFriend[index]);
+                                    return UserFriend(idChatRoom: listFriend[index].keys.first, nameFriend:listFriend[index].values.first);
+                                  });
                             } else if (state.enumHome == EnumHome.initSearch) {
                             } else if (state.enumHome == EnumHome.loadingSearch) {
                             } else if (state.enumHome == EnumHome.doneSearch) {
                             } else if (state.enumHome == EnumHome.errSearch) {}
-                            return ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.0),
-                                      child: Divider(),
-                                    ),
-                                itemCount: listFriend.length,
-                                itemBuilder: (context, index) {
-                                  print(listFriend[index]);
-                                  return UserFriend(idChatRoom: listFriend[index].key, nameFriend:listFriend[index].values);
-                                  //;
-                                });
+                            return SizedBox();
                           },
                         )))),
           ],

@@ -25,36 +25,15 @@ class CubitHome extends Cubit<StateHome> {
     });
     return listSearch;
   }
-  Future<List> getListHistory(BuildContext context) async {
+  Future<List<Map<String, String>>> getListHistory(BuildContext context) async {
+    emit(state.copyWith(enumHome: EnumHome.loadingHome));
     List<Map<String,String>> listFriend = [];
     List list = await userData.getIdChatRoomsByEmailUserHome(context);
     await Future.forEach(list, (index) async {
       String a= await userData.getNameFriendInIdChatRoom(context, idChatRoom: index.toString());
       listFriend.add({index.toString() : a});
     });
-    Map<String, String> mapString = {
-      "abc":"abcs"
-    };
-    print(mapString.keys);
+    emit(state.copyWith(enumHome: EnumHome.doneHome));
     return listFriend;
   }
-
-    /*Map mapDemo = {};
-    List listDone = [];
-
-    for(var i = 0; i < list.length; i++){
-      mapDemo.addAll({list[i]:nameFriend[i]});
-    }
-
-    listDone.add(mapDemo);*/
-
-    //return [];
-
-  /* getItem(BuildContext context , {required String idChatRoom}) async {
-    String id = await userData.getIdFriendInChatRoom(
-        emailUser: UserInheritedWidget.of(context).user.email ?? "",
-        idChatRoom: idChatRoom);
-    String nameFriend = await userData.getNameById(id: id);
-    return nameFriend;
-  }*/
 }
