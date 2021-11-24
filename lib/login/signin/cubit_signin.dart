@@ -15,7 +15,7 @@ class SignInCubit extends Cubit<SignInState>{
     emit(state.copyWith(enumStateSignIn: EnumStateSignIn.loadingSignIn));
       authMethods.signInWithEmailAndPassWord(email: email, password: pass).then((value) async {
         UserInheritedWidget.of(context).user.email = email;
-        UserInheritedWidget.of(context).user.name = "";
+        UserInheritedWidget.of(context).user.name = await userData.getNameByGmail(email: email);
         await userData.getNameByGmail(email: UserInheritedWidget.of(context).user.email ?? "");
         Navigator.of(context).pushNamedAndRemoveUntil("chatRoom", (route) => false);
       }).catchError((e) {
